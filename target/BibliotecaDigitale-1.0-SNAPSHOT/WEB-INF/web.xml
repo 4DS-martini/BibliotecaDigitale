@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <servlet>
+        <servlet-name>GestioneUtenti</servlet-name>
+        <servlet-class>Servlet.GestioneUtenti</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GestioneLibri</servlet-name>
+        <servlet-class>Servlet.GestioneLibri</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GestioneUtenti</servlet-name>
+        <url-pattern>/GestioneUtenti</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GestioneLibri</servlet-name>
+        <url-pattern>/GestioneLibri</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+</web-app>
