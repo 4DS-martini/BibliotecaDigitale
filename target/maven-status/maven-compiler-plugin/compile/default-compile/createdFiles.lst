@@ -1,2 +1,3 @@
+Database\DatabaseConnection.class
 Servlet\GestioneLibri.class
 Servlet\GestioneUtenti.class

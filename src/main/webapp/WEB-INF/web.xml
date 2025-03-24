@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
+                             http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <!-- Definizione dei Servlet -->
     <servlet>
         <servlet-name>GestioneUtenti</servlet-name>
         <servlet-class>Servlet.GestioneUtenti</servlet-class>
@@ -8,6 +12,12 @@
         <servlet-name>GestioneLibri</servlet-name>
         <servlet-class>Servlet.GestioneLibri</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DatabaseConnection</servlet-name>
+        <servlet-class>Database.DatabaseConnection</servlet-class>
+    </servlet>
+    
+    <!-- Mappatura dei Servlet -->
     <servlet-mapping>
         <servlet-name>GestioneUtenti</servlet-name>
         <url-pattern>/GestioneUtenti</url-pattern>
@@ -16,6 +26,12 @@
         <servlet-name>GestioneLibri</servlet-name>
         <url-pattern>/GestioneLibri</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DatabaseConnection</servlet-name>
+        <url-pattern>/DatabaseConnection</url-pattern>
+    </servlet-mapping>
+    
+    <!-- Configurazione della sessione -->
     <session-config>
         <session-timeout>
             30
