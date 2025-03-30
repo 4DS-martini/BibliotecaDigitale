@@ -1,3 +1,5 @@
 Database\DatabaseConnection.class
-Servlet\GestioneLibri.class
+Servlet\PrenotaLibroServlet.class
 Servlet\GestioneUtenti.class
+Servlet\HomeServlet.class
+Servlet\GestioneLibriServlet.class

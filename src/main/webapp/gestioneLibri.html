@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestione Libri</title>
+</head>
+<body>
+    <h1>Gestione Libri</h1>
+
+    <button onclick="showAddBookForm()">Aggiungi Libro</button>
+    <button onclick="showEditBookForm()">Modifica Libro</button>
+    <button onclick="showDeleteBookForm()">Elimina Libro</button>
+
+    <!-- Aggiungi Libro Form -->
+    <div id="addBookForm" style="display: none;">
+        <h2>Aggiungi un Libro</h2>
+        <form id="addBook">
+            <label for="titolo">Titolo:</label>
+            <input type="text" id="titolo" name="titolo" required><br>
+            <label for="autore">Autore:</label>
+            <input type="text" id="autore" name="autore" required><br>
+            <label for="anno_pubblicazione">Anno di Pubblicazione:</label>
+            <input type="number" id="anno_pubblicazione" name="anno_pubblicazione" required><br>
+            <label for="genere">Genere:</label>
+            <input type="text" id="genere" name="genere" required><br>
+            <label for="copie_disponibili">Copie Disponibili:</label>
+            <input type="number" id="copie_disponibili" name="copie_disponibili" required><br>
+            <button type="submit">Aggiungi Libro</button>
+        </form>
+    </div>
+
+    <!-- Modifica Libro Form -->
+    <div id="editBookForm" style="display: none;">
+        <h2>Modifica un Libro</h2>
+        <form id="editBook">
+            <label for="id_modifica">ID Libro:</label>
+            <input type="number" id="id_modifica" name="id" required><br>
+            <label for="titolo_modifica">Titolo:</label>
+            <input type="text" id="titolo_modifica" name="titolo"><br>
+            <label for="autore_modifica">Autore:</label>
+            <input type="text" id="autore_modifica" name="autore"><br>
+            <label for="anno_pubblicazione_modifica">Anno di Pubblicazione:</label>
+            <input type="number" id="anno_pubblicazione_modifica" name="anno_pubblicazione"><br>
+            <label for="genere_modifica">Genere:</label>
+            <input type="text" id="genere_modifica" name="genere"><br>
+            <label for="copie_disponibili_modifica">Copie Disponibili:</label>
+            <input type="number" id="copie_disponibili_modifica" name="copie_disponibili"><br>
+            <button type="submit">Modifica Libro</button>
+        </form>
+    </div>
+
+    <!-- Elimina Libro Form -->
+    <div id="deleteBookForm" style="display: none;">
+        <h2>Elimina un Libro</h2>
+        <form id="deleteBook">
+            <label for="id_elimina">ID Libro:</label>
+            <input type="number" id="id_elimina" name="id" required><br>
+            <button type="submit">Elimina Libro</button>
+        </form>
+    </div>
+
+    <p id="message"></p>
+
+    <script>
+        function showAddBookForm() {
+            document.getElementById('addBookForm').style.display = 'block';
+            document.getElementById('editBookForm').style.display = 'none';
+            document.getElementById('deleteBookForm').style.display = 'none';
+        }
+
+        function showEditBookForm() {
+            document.getElementById('editBookForm').style.display = 'block';
+            document.getElementById('addBookForm').style.display = 'none';
+            document.getElementById('deleteBookForm').style.display = 'none';
+        }
+
+        function showDeleteBookForm() {
+            document.getElementById('deleteBookForm').style.display = 'block';
+            document.getElementById('addBookForm').style.display = 'none';
+            document.getElementById('editBookForm').style.display = 'none';
+        }
+
+        // Aggiungi Libro
+        document.getElementById('addBook').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            let formData = new FormData(this);
+            formData.append('azione', 'aggiungi');
+            
+            fetch('GestioneLibriServlet', {
+                method: 'POST',
+                body: new URLSearchParams(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('message').innerText = data.messaggio;
+                if (data.successo) {
+                    setTimeout(() => window.location.reload(), 3000);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        // Modifica Libro
+        document.getElementById('editBook').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            let formData = new FormData(this);
+            formData.append('azione', 'modifica');
+            
+            fetch('GestioneLibriServlet', {
+                method: 'POST',
+                body: new URLSearchParams(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('message').innerText = data.messaggio;
+                if (data.successo) {
+                    setTimeout(() => window.location.reload(), 3000);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+
+        // Elimina Libro
+        document.getElementById('deleteBook').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            let formData = new FormData(this);
+            formData.append('azione', 'elimina');
+            
+            fetch('GestioneLibriServlet', {
+                method: 'POST',
+                body: new URLSearchParams(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('message').innerText = data.messaggio;
+                if (data.successo) {
+                    setTimeout(() => window.location.reload(), 3000);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prenotazione Libro</title>
+</head>
+<body>
+    <h1>Prenotazione Libro</h1>
+
+    <form id="prenotazioneForm">
+        <label for="libro_id">ID del Libro da Prenotare:</label>
+        <input type="number" id="libro_id" name="libro_id" required>
+        <button type="submit">Prenota Libro</button>
+    </form>
+
+    <p id="prenotazioneMessage"></p>
+
+    <script>
+        document.getElementById('prenotazioneForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            let libroId = document.getElementById('libro_id').value;
+
+            fetch('PrenotazioneServlet', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `libro_id=${libroId}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.successo) {
+                    document.getElementById('prenotazioneMessage').innerText = data.messaggio;
+                    setTimeout(() => window.location.href = 'home.html', 3000); // Redirect after 3 seconds
+                } else {
+                    document.getElementById('prenotazioneMessage').innerText = data.messaggio;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>

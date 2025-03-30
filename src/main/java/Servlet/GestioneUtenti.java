@@ -29,45 +29,58 @@ public class GestioneUtenti extends HttpServlet {
             gestisciLogin(request, response);
         } else if (azione.equals("registrazione")) {
             gestisciRegistrazione(request, response);
-        } else {
-            response.sendRedirect("errore.jsp"); // Pagina di errore generica
-        }
+        } 
     }
     
-    private void gestisciLogin(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        
-        String passwordDB = null;
-        
-        try (Connection conn = DatabaseConnection.getConnection()) {
-            String query = "SELECT password FROM utenti WHERE email = ?";
-            try (PreparedStatement pstmt = conn.prepareStatement(query)) {
-                pstmt.setString(1, email);
-                
-                try (ResultSet rs = pstmt.executeQuery()){
-                    if(rs.next()){
-                        passwordDB = rs.getString("password");
+private void gestisciLogin(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+    String email = request.getParameter("email");
+    String password = request.getParameter("password");
+
+    String passwordDB = null;
+
+    try (Connection conn = DatabaseConnection.getConnection()) {
+        String query = "SELECT password FROM utenti WHERE email = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, email);
+
+            try (ResultSet rs = pstmt.executeQuery()){
+                if(rs.next()){
+                    passwordDB = rs.getString("password");
+
+                    if(verificaPassword(password, passwordDB)){
+                        // Corretto: password verificata
+                        HttpSession session = request.getSession();
+                        session.setAttribute("user", email);
                         
-                        if(verificaPassword(password, passwordDB)){
-                            //corretto
-                            HttpSession session = request.getSession();
-                            session.setAttribute("user", email);
-                            request.getRequestDispatcher("home.jsp").forward(request, response);
-                            response.sendRedirect("home.jsp");
-                        }else{
+                        // Verifica se la risposta è già stata commessa
+                        if (!response.isCommitted()) {
+                            response.sendRedirect("home.html");
+                        } else {
+                            // Log o gestione dell'errore
+                            System.out.println("Risposta già commessa, impossibile eseguire il redirect");
+                        }
+                    } else {
+                        if (!response.isCommitted()) {
                             response.sendRedirect("accedi.html?error='password errata'");
                         }
                     }
+                } else {
+                    if (!response.isCommitted()) {
+                        response.sendRedirect("accedi.html?error='utente non trovato'");
+                    }
                 }
-
-                
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        // Puoi fare il redirect verso una pagina di errore, se necessario
+        if (!response.isCommitted()) {
+            response.sendRedirect("errore.html");
         }
     }
+}
+
     
     private void gestisciRegistrazione(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

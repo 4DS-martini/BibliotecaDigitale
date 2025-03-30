@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<body>
+    <h1>Benvenuto nella Home Page</h1>
+    <p id="welcomeMessage"></p>
+    
+    <button onclick="prenotaLibro()">Prenota un Libro</button>
+    <button onclick="gestisciLibri()">Gestisci Libri (Admin)</button>
+
+    <script>
+        function prenotaLibro() {
+            window.location.href = 'prenotaLibro.html'; // Reindirizza alla pagina di prenotazione libro
+        }
+
+        function gestisciLibri() {
+            window.location.href = 'gestioneLibri.html'; // Reindirizza alla pagina di gestione libri (admin)
+        }
+
+        // Mostra un messaggio di benvenuto all'utente loggato
+        fetch('HomeServlet', {
+            method: 'GET',
+            credentials: 'same-origin'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.nome && data.ruolo) {
+                document.getElementById('welcomeMessage').innerText = `Ciao ${data.nome}, il tuo ruolo è: ${data.ruolo}.`;
+            } else {
+                document.getElementById('welcomeMessage').innerText = "Errore nel recupero dei dati.";
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    </script>
+</body>
+</html>
